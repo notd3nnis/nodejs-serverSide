@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const blogRoute = require("./route/blog.route");
+const blogRouter = require("./router/blog.router");
 
 mongoose
   .connect("mongodb://localhost:27017/server")
@@ -9,7 +9,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use(express.json());
-app.use(blogRoute);
+app.use(blogRouter);
 
 app.listen(3000, () => {
   console.log("Server is listening on port 3000");

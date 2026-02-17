@@ -1,6 +1,6 @@
 const Blog = require("../model/blog.model");
 
-const getBlog = () => async (req, res) => {
+const getBlogs = () => async (req, res) => {
   try {
     const blogs = await Blog.find({});
     res.send({ blogs });
@@ -18,4 +18,4 @@ const createBlog = () => async (req, res) => {
   }
 };
 
-module.exports = { getBlog, createBlog };
+module.exports = { getBlogs, createBlog };
