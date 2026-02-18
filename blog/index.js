@@ -1,12 +1,14 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const mongoose = require('mongoose');
-const blogRouter = require('./routes/blog.route');
-const config = require('./config/config');
+const mongoose = require("mongoose");
+const blogRouter = require("./routes/blog.route");
+const config = require("./config/config");
+const { errorHandler } = require("./middleware/errorHandler");
+
 mongoose
   .connect(config.dbConnection)
   .then(() => {
-    console.log('connected to mongodb');
+    console.log("connected to mongodb");
   })
   .catch((err) => {
     console.error(err);
@@ -14,6 +16,8 @@ mongoose
 
 app.use(express.json());
 app.use(blogRouter);
+app.use(errorHandler);
+
 app.listen(config.port, () => {
   console.log(`server listening on port ${config.port}`);
 });

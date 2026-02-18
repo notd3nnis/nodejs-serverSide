@@ -1,4 +1,5 @@
-const joi = require('joi');
+const joi = require("joi");
+
 const createBlogSchema = {
   body: joi.object().keys({
     title: joi.string().required(),
