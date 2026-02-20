@@ -1,9 +1,7 @@
-const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
-const blogRouter = require("./routes/blog.route");
+const http = require("http");
 const config = require("./config/config");
-const { errorHandler } = require("./middleware/errorHandler");
+const app = require("./server");
 
 mongoose
   .connect(config.dbConnection)
@@ -14,10 +12,32 @@ mongoose
     console.error(err);
   });
 
-app.use(express.json());
-app.use(blogRouter);
-app.use(errorHandler);
-
-app.listen(config.port, () => {
+const httpServer = http.createServer(app);
+const server = httpServer.listen(config.port, () => {
   console.log(`server listening on port ${config.port}`);
+});
+
+const exitHandler = () => {
+  if (server) {
+    server.close(() => {
+      console.log("Server closed");
+      process.exit(1);
+    });
+  } else {
+    process.exit(1);
+  }
+};
+
+const unExpectedErrorHandler = (error) => {
+  console.log(error);
+  exitHandler();
+};
+
+process.on("uncaughtException", unExpectedErrorHandler);
+process.on("unhandledRejection", unExpectedErrorHandler);
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received");
+  if (server) {
+    server.close();
+  }
 });

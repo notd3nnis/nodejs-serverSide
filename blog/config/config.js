@@ -1,6 +1,5 @@
-require("dotenv").config();
-const envVarSchema = require("./../validations/env.validation");
-
+require('dotenv').config();
+const envVarSchema = require('./../validations/env.validation');
 const { value: envVars, error } = envVarSchema.validate(process.env);
 
 if (error) {
